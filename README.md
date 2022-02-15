@@ -7,4 +7,4 @@ MFEE22大專Goals-後端
 3. 在專案資料夾上一層建一個`sessions`資料夾
 4. `npm install`
 5. `npm run dev`
-6. 開啟 http://localhost:3002
+6. 開啟 http://127.0.0.1:3002
