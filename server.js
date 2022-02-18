@@ -1,7 +1,7 @@
-const express = require('express');
-require('dotenv').config();
-const path = require('path');
-const cors = require('cors');
+const express = require("express");
+require("dotenv").config();
+const path = require("path");
+const cors = require("cors");
 
 let app = express();
 
@@ -15,12 +15,12 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const expressSession = require('express-session');
-let FileStore = require('session-file-store')(expressSession);
+const expressSession = require("express-session");
+let FileStore = require("session-file-store")(expressSession);
 app.use(
   expressSession({
     store: new FileStore({
-      path: path.join(__dirname, '..', 'sessions'),
+      path: path.join(__dirname, "..", "sessions"),
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -28,21 +28,24 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, 'assets')));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "assets")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
-let memberRouter = require('./routers/member');
-app.use('/api/member', memberRouter);
+let memberRouter = require("./routers/member");
+app.use("/api/member", memberRouter);
 
-let authRouter = require('./routers/auth');
-app.use('/api/auth', authRouter);
+let authRouter = require("./routers/auth");
+app.use("/api/auth", authRouter);
+
+let orderRouter = require("./routers/order");
+app.use("/api/order", orderRouter);
 
 app.use((req, res, next) => {
-  res.status(404).send('404 not found');
+  res.status(404).send("404 not found");
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).send('server錯誤');
+  res.status(500).send("server錯誤");
 });
 
 const port = process.env.SERVER_PORT || 3002;
