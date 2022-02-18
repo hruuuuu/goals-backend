@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/hruuuuu/goals-backend#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.1",
+    "alert": "^5.0.10",
+    "argon2": "^0.28.4",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -27,7 +30,9 @@
     "express-validator": "^6.14.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.2",
     "pug": "^3.0.2",
+    "randomstring": "^1.2.2",
     "session-file-store": "^1.5.0"
   }
 }
