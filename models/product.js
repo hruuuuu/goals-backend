@@ -23,10 +23,10 @@ const getProductsBySearch = async (
   const categoryFormat = handlePrepare(category);
   const activityFormat = handlePrepare(activity);
   const sql = `SELECT * FROM goals.product WHERE valid = 1 AND price BETWEEN ${minPrice} AND ${maxPrice} AND (name LIKE ${searchFormat} AND (category_id IN (${categoryFormat}) AND activity_id IN (${activityFormat})))`;
-  let [data, fields] = await connection.execute(sql, [
-    categoryNum,
-    activityNum,
-  ]);
+  let [data, fields] = await connection.execute(
+    sql,
+    categoryNum.concat(activityNum)
+  );
   // console.log(data);
   return data;
 };
@@ -37,10 +37,10 @@ const getProductsByFilter = async (minPrice, maxPrice, category, activity) => {
   const categoryFormat = handlePrepare(category);
   const activityFormat = handlePrepare(activity);
   const sql = `SELECT * FROM goals.product WHERE valid = 1 AND price BETWEEN ${minPrice} AND ${maxPrice} AND (category_id IN (${categoryFormat}) AND activity_id IN (${activityFormat}))`;
-  let [data, fields] = await connection.execute(sql, [
-    categoryNum,
-    activityNum,
-  ]);
+  let [data, fields] = await connection.execute(
+    sql,
+    categoryNum.concat(activityNum)
+  );
   // console.log(data);
   return data;
 };
