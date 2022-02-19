@@ -40,6 +40,9 @@ app.use('/api/auth', authRouter);
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 
+let favRouter = require('./routers/fav');
+app.use('/api/fav', favRouter);
+
 app.use((req, res, next) => {
   res.status(404).send('404 not found');
 });

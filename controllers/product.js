@@ -1,15 +1,6 @@
 //處理商業行為
 const productModel = require('../models/product');
-const connection = require('../utils/database');
-
-// const handlePrepare = (string) => {
-//   let array = string.split(',');
-//   let prepareArray = [];
-//   for (let i = 1; i <= array.length; i++) {
-//     prepareArray.push('?');
-//   }
-//   return prepareArray.join(',');
-// };
+//const connection = require('../utils/database');
 
 const getProducts = async (req, res, next) => {
   //關鍵字搜尋
@@ -71,4 +62,9 @@ const getProductById = async (req, res, next) => {
   res.json(data);
 };
 
-module.exports = { getProducts, getCategory, getActivity, getProductById };
+module.exports = {
+  getProducts,
+  getCategory,
+  getActivity,
+  getProductById,
+};
