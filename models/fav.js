@@ -1,19 +1,14 @@
 //處理資料庫
 const connection = require('../utils/database');
-
-const handlePrepare = (string) => {
-  let array = string.split(',');
-  let prepareArray = [];
-  for (let i = 1; i <= array.length; i++) {
-    prepareArray.push('?');
-  }
-  const prepareFormat = prepareArray.join(',');
-  return prepareFormat;
-};
+const { toNumber, handlePrepare } = require('../utils/sqlQuery');
 
 const getProductByFavItems = async (favItems) => {
+  const favItemsNum = toNumber(favItems);
+  const favItemsFormat = handlePrepare(favItems);
+
   let [data, fields] = await connection.execute(
-    `SELECT * FROM goals.product WHERE valid = 1 AND id IN (${favItems})`
+    `SELECT * FROM goals.product WHERE valid = 1 AND id IN (${favItemsFormat})`,
+    favItemsNum
   );
   console.log(data);
   return data;
