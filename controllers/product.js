@@ -51,11 +51,6 @@ const getCategory = async (req, res, next) => {
   res.json(data);
 };
 
-const getActivity = async (req, res, next) => {
-  const data = await productModel.getActivity();
-  res.json(data);
-};
-
 const getProductById = async (req, res, next) => {
   const productId = req.params.productId;
   const data = await productModel.getProductById(productId);
@@ -65,6 +60,5 @@ const getProductById = async (req, res, next) => {
 module.exports = {
   getProducts,
   getCategory,
-  getActivity,
   getProductById,
 };

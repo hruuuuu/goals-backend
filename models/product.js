@@ -67,6 +67,5 @@ module.exports = {
   getProductsBySearch,
   getProductsByFilter,
   getCategory,
-  getActivity,
   getProductById,
 };
