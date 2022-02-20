@@ -7,28 +7,21 @@ router.get("/getprofile", async (req, res, next) => {
     "SELECT * FROM goals.member WHERE id=?",
     [1]
   );
-
-  let [data1] = await connection.execute(
-    "SELECT * FROM goals.order_details WHERE id=?",
-    [1]
-  );
-
-  var data2 = Object.assign({}, [data], [data1]);
-
-  res.json(data2);
+  res.json(data);
 });
 
 router.post("/editprofile", async (req, res, next) => {
   console.log(req.body);
 
   let [result] = await connection.execute(
-    "UPDATE goals.member SET username=?, email=? WHERE id=?",
-    [req.body.username, req.body.email, 1]
-  );
-
-  let [result1] = await connection.execute(
-    "UPDATE order_details SET address=?, tel=? WHERE id=?",
-    [req.body.address, req.body.tel, 1]
+    "UPDATE goals.member SET username=?, email=? ,default_address=?, default_tel=? WHERE id=?",
+    [
+      req.body.username,
+      req.body.email,
+      req.body.default_address,
+      req.body.default_tel,
+      1,
+    ]
   );
 
   res.json({ message: "ok" });
