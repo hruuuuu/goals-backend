@@ -38,8 +38,12 @@ let authRouter = require('./routers/auth');
 app.use('/api/auth', authRouter);
 
 let productRouter = require('./routers/product');
+const { response } = require('express');
 app.use('/api/product', productRouter);
 
+let cartRouter = require('./routers/cart');
+app.use('/api/cart', cartRouter);
+ 
 app.use((req, res, next) => {
   res.status(404).send('404 not found');
 });
