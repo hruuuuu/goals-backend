@@ -8,7 +8,14 @@ router.get("/getprofile", async (req, res, next) => {
     [1]
   );
 
-  res.json(data);
+  let [data1] = await connection.execute(
+    "SELECT * FROM goals.order_details WHERE id=?",
+    [1]
+  );
+
+  var data2 = Object.assign({}, [data], [data1]);
+
+  res.json(data2);
 });
 
 router.post("/editprofile", async (req, res, next) => {
