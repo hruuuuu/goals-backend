@@ -31,6 +31,9 @@ app.use(
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+let blogRouter = require('./routers/blog');
+app.use('/api/blog', blogRouter);
+
 let memberRouter = require('./routers/member');
 app.use('/api/member', memberRouter);
 
