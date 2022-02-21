@@ -2,12 +2,13 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
+const passport = require('passport');
 
 let app = express();
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
@@ -27,6 +28,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -40,6 +43,11 @@ app.use('/api/member', memberRouter);
 let authRouter = require('./routers/auth');
 app.use('/api/auth', authRouter);
 
+let verifyRouter = require('./routers/verify');
+app.use('/api/verify', verifyRouter);
+
+let socialRouter = require('./routers/social');
+app.use('/api/social', socialRouter);
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 

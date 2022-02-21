@@ -11,30 +11,13 @@ const getActivity = async () => {
 };
 
 const getProducts = async () => {
-<<<<<<< HEAD
-  let [data, fields] = await connection.execute(
-    'SELECT * FROM goals.product WHERE valid = 1'
-  );
-  // console.log(data);
-  return data;
-=======
   const sql = `SELECT * FROM goals.product WHERE valid = 1`;
   const [response, fields] = await connection.execute(sql);
   return response;
->>>>>>> c42814875c6d241c1cac30c1e48fa58ca89c4bc4
 };
 
 const getProductsBySearch = async (search, category, activity) => {
   const searchFormat = `"%${search}%"`;
-  const sql = `SELECT * FROM goals.product WHERE valid = 1 AND price BETWEEN ${minPrice} AND ${maxPrice} AND (name LIKE ${searchFormat} AND (category_id IN (${category}) AND activity_id IN (${activity})))`;
-  let [data, fields] = await connection.execute(sql);
-  // console.log(data);
-  return data;
-};
-
-const getProductsByFilter = async (minPrice, maxPrice, category, activity) => {
-  const sql = `SELECT * FROM goals.product WHERE valid = 1 AND price BETWEEN ${minPrice} AND ${maxPrice} AND (category_id IN (${category}) AND activity_id IN (${activity}))`;
-  let [data, fields] = await connection.execute(sql);
   const categoryNum = toNumber(category);
   const activityNum = toNumber(activity);
   const categoryFormat = handlePrepare(category);
@@ -68,36 +51,15 @@ const getProductsBySort = async (column, method) => {
 };
 
 const getCategory = async () => {
-<<<<<<< HEAD
-  let [data, fields] = await connection.execute(
-    'SELECT * FROM goals.product_category'
-  );
-  // console.log(data);
-  return data;
-};
-
-const getActivity = async () => {
-  let [data, fields] = await connection.execute(
-    'SELECT * FROM goals.activity WHERE valid = 1'
-  );
-=======
   const sql = `SELECT * FROM goals.product_category`;
   const [data, fields] = await connection.execute(sql);
->>>>>>> c42814875c6d241c1cac30c1e48fa58ca89c4bc4
   // console.log(data);
   return data;
 };
 
 const getProductById = async (productId) => {
-<<<<<<< HEAD
-  let [data, fields] = await connection.execute(
-    'SELECT * FROM goals.product WHERE valid = 1 AND id = ?',
-    [productId]
-  );
-=======
   const sql = `SELECT * FROM goals.product WHERE valid = 1 AND id = ?`;
   const [data, fields] = await connection.execute(sql, [productId]);
->>>>>>> c42814875c6d241c1cac30c1e48fa58ca89c4bc4
   // console.log(data);
   return data;
 };
