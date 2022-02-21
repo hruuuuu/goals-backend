@@ -32,9 +32,9 @@ router.post('/resend', async(req, res, next) => {
         text: "您好，請點選以下連結進行驗證",
         html: `
         <div>
-            <a href=http://127.0.0.1:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}>請點此處進行驗證</a>
+            <a href=http://localhost:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}>請點此處進行驗證</a>
             <p>或是直接複製下列網址貼到瀏覽器上做驗證</p>
-            <span>http://127.0.0.1:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}</span>
+            <span>http://localhost:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}</span>
         </div>
             `
     };
@@ -84,9 +84,9 @@ router.post('/forget', async(req, res, next) => {
         text: "您好，請點選以下連結進行重置密碼",
         html: `
         <div>
-            <a href=http://127.0.0.1:3000/reset/m=${email}&v=${verifyCode}>請點此處重置密碼</a>
+            <a href=http://localhost:3000/reset/m=${email}&v=${verifyCode}>請點此處重置密碼</a>
             <p>或是直接複製下列網址貼到瀏覽器上重置密碼</p>
-            <span>http://127.0.0.1:3000/reset/m=${email}&v=${verifyCode}</span>
+            <span>http://localhost:3000/reset/m=${email}&v=${verifyCode}</span>
         </div>
             `
     };
@@ -159,20 +159,20 @@ router.get('/:verifyString', async(req, res, next) => {
 
     if(checkTimeDiff(signupTimeStamp, currentTimeStamp) > 5){
         alert("驗證信鏈結已超時，請重新請求驗證");
-        res.redirect('http://127.0.0.1:3000/');
+        res.redirect('http://localhost:3000/');
         return;
     }else{
         try{
             const [checkStatus] = await connection.execute('SELECT valid FROM goals.member WHERE verifyString=?', [verifyStr]);
                 if(checkStatus[0].valid === 1){
                     alert("您的電子信箱已驗證過");
-                    res.redirect('http://127.0.0.1:3000/');
+                    res.redirect('http://localhost:3000/');
                     return;
                 }
             const [setVerify] = await connection.execute('UPDATE goals.member SET valid=1 WHERE verifyString=?', [verifyStr]);
                 if(setVerify.warningStatus === 0){
                     alert("電子信箱驗證成功");
-                    res.redirect('http://127.0.0.1:3000/');
+                    res.redirect('http://localhost:3000/');
                     return;
                 }
         }catch(err){
