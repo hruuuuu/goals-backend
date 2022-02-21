@@ -73,9 +73,9 @@ router.post('/signup', async(req, res, next) => {
         text: "您好，請點選以下連結進行驗證",
         html: `
         <div>
-            <a href=http://127.0.0.1:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}>請點此處進行驗證</a>
+            <a href=http://localhost:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}>請點此處進行驗證</a>
             <p>或是直接複製下列網址貼到瀏覽器上做驗證</p>
-            <span>http://127.0.0.1:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}</span>
+            <span>http://localhost:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}</span>
         </div>
             `
     };
