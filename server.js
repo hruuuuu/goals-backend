@@ -43,6 +43,9 @@ app.use("/api/order", orderRouter);
 let productRouter = require("./routers/product");
 app.use("/api/product", productRouter);
 
+let couponRouter = require("./routers/coupon");
+app.use("/api/coupon", couponRouter);
+
 app.use((req, res, next) => {
   res.status(404).send("404 not found");
 });
