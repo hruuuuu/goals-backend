@@ -34,6 +34,9 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+let blogRouter = require('./routers/blog');
+app.use('/api/blog', blogRouter);
+
 let memberRouter = require('./routers/member');
 app.use('/api/member', memberRouter);
 
@@ -45,6 +48,14 @@ app.use('/api/verify', verifyRouter);
 
 let socialRouter = require('./routers/social');
 app.use('/api/social', socialRouter);
+let productRouter = require('./routers/product');
+app.use('/api/product', productRouter);
+
+let favRouter = require('./routers/fav');
+app.use('/api/fav', favRouter);
+
+let activityRouter = require('./routers/activity');
+app.use('/api/activity', activityRouter);
 
 app.use((req, res, next) => {
   res.status(404).send('404 not found');
