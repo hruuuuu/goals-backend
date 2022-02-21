@@ -44,7 +44,6 @@ let orderRouter = require("./routers/order");
 app.use("/api/order", orderRouter);
 
 let productRouter = require("./routers/product");
-const { response } = require('express');
 app.use("/api/product", productRouter);
 
 let couponRouter = require("./routers/coupon");
