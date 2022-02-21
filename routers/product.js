@@ -9,7 +9,7 @@ router.get("/", productController.getProducts);
 router.get("/category", productController.getCategory);
 
 //到資料庫acticity撈出所有活動 -> Filter, FilterCheckbox
-router.get("/activity", productController.getActivity);
+// router.get("/activity", productController.getActivity);
 
 //到資料庫撈出 id = ? 的商品資料 -> ProductsDetail
 router.get("/:productId", productController.getProductById);
