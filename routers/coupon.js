@@ -7,7 +7,7 @@ router.get("/", async (req, res, next) => {
   let [data] = await connection.execute("SELECT * FROM goals.coupon;");
   res.json(data);
 });
-//到資料庫coupon_receive撈出所有商品類別
+//到資料庫coupon_receive撈出會員折價券狀況
 router.get("/receive", async (req, res, next) => {
   let [data] = await connection.execute("SELECT * FROM goals.coupon_receive;");
   res.json(data);
