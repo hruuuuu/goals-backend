@@ -4,7 +4,9 @@ const connection = require("../utils/database");
 
 //到資料庫product撈出所有商品資料 -> Products
 router.get("/", async (req, res, next) => {
-  let [data] = await connection.execute("SELECT * FROM goals.coupon;");
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.coupon WHERE valid=1;"
+  );
   res.json(data);
 });
 
