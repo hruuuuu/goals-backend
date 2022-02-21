@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
 
-//到資料庫product撈出所有商品資料 -> Products
+//到資料庫coupon撈出所有商品資料 -> Products
 router.get("/", async (req, res, next) => {
   let [data] = await connection.execute("SELECT * FROM goals.coupon;");
   res.json(data);
 });
-
+//到資料庫coupon_receive撈出所有商品類別
 router.get("/receive", async (req, res, next) => {
   let [data] = await connection.execute("SELECT * FROM goals.coupon_receive;");
   res.json(data);
