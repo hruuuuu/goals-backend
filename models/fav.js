@@ -10,7 +10,7 @@ const getProductByFavItems = async (favItems) => {
     `SELECT * FROM goals.product WHERE valid = 1 AND id IN (${favItemsFormat})`,
     favItemsNum
   );
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
