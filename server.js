@@ -2,9 +2,11 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
-const app = express();
+const passport = require('passport');
 
 const socketio = require('./utils/socketio');
+
+const app = express();
 
 app.use(
   cors({
@@ -28,9 +30,14 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+let blogRouter = require('./routers/blog');
+app.use('/api/blog', blogRouter);
 
 let memberRouter = require('./routers/member');
 app.use('/api/member', memberRouter);
@@ -38,8 +45,19 @@ app.use('/api/member', memberRouter);
 let authRouter = require('./routers/auth');
 app.use('/api/auth', authRouter);
 
+let verifyRouter = require('./routers/verify');
+app.use('/api/verify', verifyRouter);
+
+let socialRouter = require('./routers/social');
+app.use('/api/social', socialRouter);
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
+
+let orderRouter = require('./routers/order');
+app.use('/api/order', orderRouter);
+
+let couponRouter = require('./routers/coupon');
+app.use('/api/coupon', couponRouter);
 
 let favRouter = require('./routers/fav');
 app.use('/api/fav', favRouter);
