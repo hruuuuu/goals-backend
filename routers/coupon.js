@@ -18,4 +18,12 @@ router.get("/receive", async (req, res, next) => {
   res.json(data);
 });
 
+router.get("/unvalid", async (req, res, next) => {
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=0;",
+    [1]
+  );
+  res.json(data);
+});
+
 module.exports = router;
