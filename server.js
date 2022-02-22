@@ -2,8 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
-
-let app = express();
+const app = express();
 
 app.use(
   cors({
@@ -55,6 +54,31 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.SERVER_PORT || 3002;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`server running at port ${port}`);
+});
+
+/* socket.io */
+const io = require('socket.io')(server, {
+  cors: {
+    origin: [process.env.FRONTEND_URL],
+    credentials: true,
+  },
+});
+
+const roomName = 'memberId';
+
+io.on('connection', (socket) => {
+  // 回傳給所有連結著的client
+  socket.on(roomName, (message) => {
+    io.sockets.emit(roomName, message);
+  });
+
+  // 回傳給除了發送者外所有連結著的client
+  socket.on('broadcast', (message) => {
+    socket.broadcast.emit('broadcast', message);
+  });
+  socket.on(`join chat ${roomName}`, (data) => {
+    console.log(`${data.identity} connected to chat ${roomName}`);
+  });
 });
