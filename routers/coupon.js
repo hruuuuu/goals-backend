@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
 
+//撈出全部的優惠券(valid=1)
 router.get("/", async (req, res, next) => {
   let [data] = await connection.execute(
     "SELECT * FROM goals.coupon WHERE valid=1;"
