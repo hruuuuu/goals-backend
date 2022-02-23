@@ -4,12 +4,25 @@ const connection = require("../utils/database");
 
 //到資料庫coupon撈出所有商品資料 -> Products
 router.get("/", async (req, res, next) => {
-  let [data] = await connection.execute("SELECT * FROM goals.coupon;");
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.coupon WHERE valid=1;"
+  );
   res.json(data);
 });
 //到資料庫coupon_receive撈出會員折價券狀況
 router.get("/receive", async (req, res, next) => {
-  let [data] = await connection.execute("SELECT * FROM goals.coupon_receive;");
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=1;",
+    [1]
+  );
+  res.json(data);
+});
+
+router.get("/unvalid", async (req, res, next) => {
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=0;",
+    [1]
+  );
   res.json(data);
 });
 
