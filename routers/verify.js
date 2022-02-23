@@ -179,7 +179,7 @@ router.get('/:verifyString', async (req, res, next) => {
 
   if (checkTimeDiff(signupTimeStamp, currentTimeStamp) > 5) {
     alert('驗證信鏈結已超時，請重新請求驗證');
-    res.redirect('http://127.0.0.1:3000/');
+    res.redirect('http://localhost:3000/');
     return;
   } else {
     try {
@@ -189,7 +189,7 @@ router.get('/:verifyString', async (req, res, next) => {
       );
       if (checkStatus[0].valid === 1) {
         alert('您的電子信箱已驗證過');
-        res.redirect('http://127.0.0.1:3000/');
+        res.redirect('http://localhost:3000/');
         return;
       }
       const [setVerify] = await connection.execute(
@@ -198,7 +198,7 @@ router.get('/:verifyString', async (req, res, next) => {
       );
       if (setVerify.warningStatus === 0) {
         alert('電子信箱驗證成功');
-        res.redirect('http://127.0.0.1:3000/');
+        res.redirect('http://localhost:3000/');
         return;
       }
     } catch (err) {
