@@ -78,4 +78,4 @@ const server = app.listen(port, () => {
   console.log(`server running at port ${port}`);
 });
 
-socketio.conntection(server);
+socketio.initSocket(server);
