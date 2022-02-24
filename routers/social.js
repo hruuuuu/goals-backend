@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../utils/database');
-const alert = require('alert');
 const passport = require('passport');
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
+// const FacebookStrategy = require('passport-facebook')
+const socialController = require('../controllers/social');
 
 /* google token 的中間件 */
 passport.use(new GoogleTokenStrategy({
@@ -15,46 +15,25 @@ passport.use(new GoogleTokenStrategy({
     }
 ));
 
+router.post('/google', passport.authenticate('google-token', {session: false}, socialController.googleUser));
 
-router.post('/google', passport.authenticate('google-token', {session: false}), async(req, res, next) => {
-    const {provider} = req.user;
-    const {email, name, verified_email} = req.user._json;
+/* Facebook token 的中間件 */
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FACEBOOK_CLIENT_ID,
+//     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+//     // callbackURL: "http://localhost:3000/"
+// },
+//     function(accessToken, refreshToken, profile, done) {
+//         console.log(profile)
+//         return done(null, profile);
+//     }
+// ));
 
-    // 檢查用戶是否已存在
-    const [userCheck] = await connection.execute('SELECT * FROM goals.member WHERE email=?', [email]);
-    if(userCheck.length > 0){
-        alert("此用戶已存在")
-        return res.json({
-            msg: "此用戶已存在"
-        })
-    }
-
-    // 加入新用戶資料到資料庫中
-    const newAccount = await connection.execute('INSERT INTO goals.member (email, username, password, valid, verifyString) VALUE (?, ?, ?, ?, ?)', [email, name, "socialMedia", verified_email, provider]); 
-    
-    // const googleMember = {
-    //     id: newAccount.id,
-    //     email: newAccount.email
-    // }
-
-    // req.session.member = googleMember;
-
-    alert("第三方登入成功");
-
-    res.status(201).json({
-        msg: "第三方登入成功",
-        data: newAccount
-    })
-});
-
+// router.post('/facebook', passport.authenticate('facebook') ,async(req, res, next) => {
+//     console.log(req)
+// })
 
 // 如果用戶登出但瀏覽器google帳號未登出，下次再登入會變成不會跳到填寫google帳號密碼畫面
-router.post('/logout', async(req, res, next) => {
-    req.logout();
-    // res.redirect('/')
-    return res.json({
-        msg: "會員登出成功"
-    })
-})
+router.post('/logout', socialController.socialLogout);
 
 module.exports = router;

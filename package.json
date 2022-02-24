@@ -32,6 +32,8 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "passport": "^0.5.2",
+    "passport-facebook": "^3.0.0",
+    "passport-facebook-token": "^4.0.0",
     "passport-google-token": "^0.1.2",
     "pug": "^3.0.2",
     "randomstring": "^1.2.2",
