@@ -12,10 +12,12 @@ router.post("/getprofile", async (req, res, next) => {
 
 router.post("/editprofile", async (req, res, next) => {
   let [result] = await connection.execute(
-    "UPDATE goals.member SET username=?, email=? ,default_address=?, default_tel=? WHERE id=?",
+    "UPDATE goals.member SET username=?, email=? ,county=?,district=?,default_address=?, default_tel=? WHERE id=?",
     [
       req.body.username,
       req.body.email,
+      req.body.county,
+      req.body.district,
       req.body.default_address,
       req.body.default_tel,
       req.body.id,
