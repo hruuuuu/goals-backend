@@ -1,5 +1,5 @@
-const blogModel = require("../models/blog");
-const connection = require("../utils/database");
+const blogModel = require('../models/blog');
+const connection = require('../utils/database');
 
 const getBlogs = async (req, res, next) => {
   const data = await blogModel.getBlogs();
@@ -10,7 +10,7 @@ const getBlogs = async (req, res, next) => {
   // 取得目前在第幾頁
   // 如果沒有設定 req.quyer.page，那就設成 1
   let page = req.query.page || 1;
-  console.log("aaaaaaaaa", page);
+  // console.log("aaaaaaaaa", page);
 
   // 取得目前的總筆數
   let total = await blogModel.countByBlog();
@@ -19,13 +19,13 @@ const getBlogs = async (req, res, next) => {
   const perPage = 6;
   // lastPage: 總共有幾頁
   const lastPage = Math.ceil(total / perPage);
-  console.log(total);
+  // console.log(total);
 
   // 計算 SQL 要用的 offset
   let offset = (page - 1) * perPage;
   // 取得資料
   let dataCount = await blogModel.pageBlog(perPage, offset);
-  console.log(total, perPage, lastPage);
+  // console.log(total, perPage, lastPage);
   // 準備要 response
 
   res.json({

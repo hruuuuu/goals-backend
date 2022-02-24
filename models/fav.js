@@ -1,4 +1,4 @@
-//處理資料庫
+// 處理資料庫
 const connection = require('../utils/database');
 const { toNumber, handlePrepare } = require('../utils/sqlQuery');
 
@@ -10,7 +10,7 @@ const getProductByFavItems = async (favItems) => {
     `SELECT * FROM goals.product WHERE valid = 1 AND id IN (${favItemsFormat})`,
     favItemsNum
   );
-  console.log(data);
+  // console.log(data);
   return data;
 };
 

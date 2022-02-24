@@ -4,11 +4,13 @@ const path = require('path');
 const cors = require('cors');
 const passport = require('passport');
 
-let app = express();
+const socketio = require('./utils/socketio');
+
+const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
   })
 );
@@ -51,6 +53,12 @@ app.use('/api/social', socialRouter);
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 
+let orderRouter = require('./routers/order');
+app.use('/api/order', orderRouter);
+
+let couponRouter = require('./routers/coupon');
+app.use('/api/coupon', couponRouter);
+
 let favRouter = require('./routers/fav');
 app.use('/api/fav', favRouter);
 
@@ -66,6 +74,8 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.SERVER_PORT || 3002;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`server running at port ${port}`);
 });
+
+socketio.initSocket(server);

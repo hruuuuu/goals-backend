@@ -34,7 +34,7 @@ async function pageBlog(perPage, offset) {
     "SELECT * FROM goals.blog WHERE valid = 1 LIMIT ? OFFSET ?",
     [perPage, offset]
   );
-  console.log(data);
+  // console.log(data);
   return data;
 }
 
