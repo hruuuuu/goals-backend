@@ -56,9 +56,6 @@ app.use("/api/order", orderRouter);
 
 let couponRouter = require("./routers/coupon");
 app.use("/api/coupon", couponRouter);
-
-let cartRouter = require('./routers/cart');
-app.use('/api/cart', cartRouter);
  
 let favRouter = require('./routers/fav');
 app.use('/api/fav', favRouter);

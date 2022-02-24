@@ -1,42 +1,17 @@
-//處理資料庫
-const connection = require('../utils/database');
+// // 處理資料庫
+// const connection = require('../utils/database');
+// const productController = require('../controllers/cart');
 
-const getProducts = async () => {
-  let [data, fields] = await connection.execute(
-    'SELECT * FROM goals.product WHERE valid = 1'
-  );
-  console.log(data);
-  return data;
-};
+// const getCartCoupon = async () => {
+//   const sql = `SELECT * FROM goals.coupon WHERE valid=1`;
+//   const [response, fields] = await connection.execute(sql);
+//   return response;
+// };
 
-const getActivity = async () => {
-    let [data, fields] = await connection.execute(
-      'SELECT * FROM goals.activity WHERE valid = 1'
-    );
-    console.log(data);
-    return data;
-  };
-
-  const getCoupons = async () => {
-    let [data, fields] = await connection.execute(
-      'SELECT * FROM goals.coupon WHERE valid = 1'
-    );
-    console.log(data);
-    return data;
-  };
-
-  const getCouponByMemberId = async (memberId) => {
-    let [data, fields] = await connection.execute(
-      'SELECT * FROM goals.coupon_receive WHERE valid = 1 AND member_id = ?',
-      [memberId]
-    );
-    console.log(data);
-    return data;
-  };
-
-  module.exports = {
-    getProducts,
-    getActivity,
-    getCoupons,
-    getCouponByMemberId,
-  };
+// const getCouponBy = async () => {
+//   const sql = `SELECT * FROM goals.activity`;
+//   const [response, fields] = await connection.execute(sql);
+//   // console.log(data);
+//   return response;
+// };
+// SELECT * FROM coupon where coupon.id NOT IN (SELECT coupon_id from coupon_receive where member_id=?) AND valid =1
