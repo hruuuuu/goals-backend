@@ -1,4 +1,4 @@
-//處理資料庫
+// 處理資料庫
 const connection = require('../utils/database');
 const { toNumber, handlePrepare } = require('../utils/sqlQuery');
 
