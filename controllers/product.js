@@ -89,7 +89,8 @@ const getCategory = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   const productId = req.params.productId;
-  const data = await productModel.getProductById(productId);
+  const response = await productModel.getProductById(productId);
+  const data = await getDiscountPrice(response);
   res.json(data);
 };
 

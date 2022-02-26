@@ -1,29 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const connection = require('../utils/database');
-const argon2 = require('argon2');
-const sgMail = require('@sendgrid/mail');
-const randomString = require('randomstring');
-const alert = require('alert');
+const connection = require("../utils/database");
+const argon2 = require("argon2");
+const sgMail = require("@sendgrid/mail");
+const randomString = require("randomstring");
+const alert = require("alert");
 
-router.post('/login', async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
 
   const [userCheck] = await connection.execute(
-    'SELECT * FROM goals.member WHERE email=?',
+    "SELECT * FROM goals.member WHERE email=?",
     [email]
   );
   if (userCheck.length === 0) {
-    alert('此用戶不存在');
+    alert("此用戶不存在");
     return res.status(400).json({
-      msg: '此用戶不存在',
+      msg: "此用戶不存在",
     });
   }
 
   if (userCheck[0].valid === 0) {
-    alert('尚未通過帳戶驗證');
+    alert("尚未通過帳戶驗證");
     return res.status(400).json({
-      msg: '尚未通過帳戶驗證',
+      msg: "尚未通過帳戶驗證",
     });
   }
 
@@ -31,9 +31,9 @@ router.post('/login', async (req, res, next) => {
   // 驗證密碼
   const verifyPassword = await argon2.verify(user.password, password);
   if (!verifyPassword) {
-    alert('帳號或密碼錯誤');
+    alert("帳號或密碼錯誤");
     return res.status(400).json({
-      msg: '帳號或密碼錯誤',
+      msg: "帳號或密碼錯誤",
     });
   }
 
@@ -49,19 +49,19 @@ router.post('/login', async (req, res, next) => {
   });
 });
 
-router.post('/signup', async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   // 取得前端用戶輸入之資料
   const { email, password } = req.body;
 
   // 檢查用戶是否已存在
   const [userCheck] = await connection.execute(
-    'SELECT * FROM goals.member WHERE email=?',
+    "SELECT * FROM goals.member WHERE email=?",
     [email]
   );
   if (userCheck.length > 0) {
-    alert('此用戶已存在');
+    alert("此用戶已存在");
     return res.json({
-      msg: '此用戶已存在',
+      msg: "此用戶已存在",
     });
   }
 
@@ -74,9 +74,9 @@ router.post('/signup', async (req, res, next) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: email,
-    from: 'Goals Function <goalsfoods@gmail.com>',
-    subject: '歡迎您註冊果實網站',
-    text: '您好，請點選以下連結進行驗證',
+    from: "Goals Function <goalsfoods@gmail.com>",
+    subject: "歡迎您註冊果實網站",
+    text: "您好，請點選以下連結進行驗證",
     html: `
         <div>
             <a href=http://localhost:3002/api/verify/v=${verifyCode}&t=${joinTimeStamp}>請點此處進行驗證</a>
@@ -103,21 +103,21 @@ router.post('/signup', async (req, res, next) => {
 
   // 加入新用戶資料到資料庫中
   const newAccount = await connection.execute(
-    'INSERT INTO goals.member (email, password, verifyString, valid, timeStamp) VALUE (?, ?, ?, ?, ?)',
+    "INSERT INTO goals.member (email, password, verifyString, valid, timeStamp) VALUE (?, ?, ?, ?, ?)",
     [email, hashPassword, verifyCode, 0, joinTime]
   );
   // console.log(newAccount);
   sendMail();
-  alert('註冊成功');
+  alert("註冊成功");
   return res.json({
-    msg: '新增用戶成功',
+    msg: "新增用戶成功",
   });
 });
 
-router.post('/logout', (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   req.session.destroy();
   return res.json({
-    msg: '會員登出成功',
+    msg: "會員登出成功",
   });
 });
 
