@@ -9,7 +9,7 @@ const getDietlogs = async () => {
 };
 
 const getDietlogsByDate = async (date) => {
-  const sql = `SELECT * FROM goals.diet WHERE valid = 1 AND DATE(created_at) = ?`;
+  const sql = `SELECT * FROM goals.diet WHERE valid = 1 AND DATE(datetime) = ?`;
   const [response, fields] = await connection.execute(sql, [date]);
   return response;
 };
@@ -45,16 +45,30 @@ const updateDietlogDataById = async (
   title,
   description,
   category,
-  time
+  datetime
 ) => {
-  const sql = `UPDATE goals.diet SET title = ?, description = ?,category_id = ?, edited_at = ? WHERE id = ?`;
+  const sql = `UPDATE goals.diet SET title = ?, description = ?, category_id = ?, edited_at = ? WHERE id = ?`;
   const [response, fields] = await connection.execute(sql, [
     title,
     description,
     category,
-    time,
+    datetime,
     id,
   ]);
+  return response;
+};
+
+const insertDietlogData = async (title, description, category, datetime) => {
+  const insert = `INSERT INTO goals.diet (title, description, category_id, datetime, valid) VALUES (?, ?, ?, ?, 1)`;
+  const [insertResult] = await connection.execute(insert, [
+    title,
+    description,
+    category,
+    datetime,
+  ]);
+  const getId = `SELECT id FROM goals.diet ORDER BY id DESC LIMIT 1`;
+  const [response, fields] = await connection.execute(getId);
+  console.log(response);
   return response;
 };
 
@@ -73,4 +87,6 @@ module.exports = {
   updateDietlogImgById,
   getDietlogsImgById,
   updateDietlogImgValidById,
+  insertDietlogData,
+  // insertDietlogImgById,
 };

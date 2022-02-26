@@ -76,7 +76,6 @@ const updateDietlogImgById = async (req, res, next) => {
     req.files.forEach((file) => {
       fileNames.push(file.filename);
     });
-    console.log(fileNames);
     try {
       const updateValidResponse = await dietlogModel.updateDietlogImgValidById(
         id
@@ -97,21 +96,74 @@ const updateDietlogImgById = async (req, res, next) => {
 const updateDietlogDataById = async (req, res, next) => {
   const id = req.body.id;
   const title = req.body.title;
-  const description = req.body.description;
+  const description =
+    req.body.description === undefined ||
+    req.body.description === null ||
+    req.body.description === 'null'
+      ? ''
+      : req.body.description;
   const category = req.body.category;
-  const time = req.body.time;
+  const datetime = req.body.datetime;
   try {
     const data = await dietlogModel.updateDietlogDataById(
       id,
       title,
       description,
       category,
-      time
+      datetime
     );
     res.status(202).json({ code: 20001, msg: '編輯成功' });
   } catch (error) {
     console.log(error);
     res.status(400).json({ code: 40001, msg: '編輯資料發生錯誤' });
+  }
+};
+
+const insertDietlogData = async (req, res, next) => {
+  const title = req.body.title;
+  const description =
+    req.body.description === undefined ||
+    req.body.description === null ||
+    req.body.description === 'null'
+      ? ''
+      : req.body.description;
+  const category = req.body.category;
+  const datetime = req.body.datetime;
+  try {
+    const data = await dietlogModel.insertDietlogData(
+      title,
+      description,
+      category,
+      datetime
+    );
+    req.id = data[0]['id'];
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ code: 40001, msg: '新增資料發生錯誤' });
+  }
+};
+
+const insertDietlogImgById = async (req, res, next) => {
+  const id = req.id;
+  if (req.files) {
+    let fileNames = [];
+    req.files.forEach((file) => {
+      fileNames.push(file.filename);
+    });
+    console.log('id', id);
+    console.log('fileNames', fileNames);
+    try {
+      const addImgResponse = await dietlogModel.updateDietlogImgById(
+        fileNames,
+        id
+      );
+      res.status(202).json({ code: 20001, msg: '新增成功' });
+    } catch (error) {
+      res.status(400).json({ code: 40001, msg: '儲存圖片發生錯誤' });
+    }
+  } else {
+    res.status(202).json({ code: 20001, msg: '新增成功' });
   }
 };
 
@@ -133,4 +185,6 @@ module.exports = {
   updateDietlogDataById,
   updateDietlogImgById,
   getDietlogsImgById,
+  insertDietlogData,
+  insertDietlogImgById,
 };
