@@ -28,8 +28,6 @@ router.post("/orderItems", async (req, res, next) => {
 });
 //order_details
 router.post("/orderDetails", async (req, res, next) => {
-  console.log(req.body);
-
   const date = new Date();
 
   let [result] = await connection.execute(
@@ -48,7 +46,6 @@ router.post("/orderDetails", async (req, res, next) => {
       req.body.recipient,
       req.body.tel,
       req.body.order_status_id,
-      // req.body.coupon_id,
       date,
     ]
   );
