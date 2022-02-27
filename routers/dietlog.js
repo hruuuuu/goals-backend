@@ -23,6 +23,12 @@ router.post(
   dietlogController.insertDietlogImgById
 );
 
+router.post('/update/food', dietlogController.updateDietlogFoodById);
+
+router.post('/insert/food', dietlogController.insertDietlogFoodById);
+
 router.post('/image', dietlogController.getDietlogsImgById);
+
+router.post('/food', dietlogController.getDietlogsFoodById);
 
 module.exports = router;

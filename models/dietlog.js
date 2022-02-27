@@ -68,12 +68,85 @@ const insertDietlogData = async (title, description, category, datetime) => {
   ]);
   const getId = `SELECT id FROM goals.diet ORDER BY id DESC LIMIT 1`;
   const [response, fields] = await connection.execute(getId);
-  console.log(response);
+  // console.log(response);
   return response;
+};
+
+const updateDietlogFoodById = async (id, foods) => {
+  const deletePrev = `UPDATE goals.diet_food SET valid = 0 WHERE diet_id = ?`;
+  const [responseDelete] = await connection.execute(deletePrev, [id]);
+
+  foods.forEach(async (food) => {
+    const {
+      name,
+      calories,
+      protien,
+      fat,
+      saturated_fat,
+      trans_fat,
+      carb,
+      sugar,
+      sodium,
+    } = food;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protien, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const [response, fields] = await connection.execute(sql, [
+      id,
+      name,
+      calories,
+      protien,
+      fat,
+      saturated_fat,
+      trans_fat,
+      carb,
+      sugar,
+      sodium,
+    ]);
+    return response;
+  });
+};
+
+const insertDietlogFoodById = async (foods) => {
+  const getId = `SELECT id FROM goals.diet ORDER BY id DESC LIMIT 1`;
+  const [responseId] = await connection.execute(getId);
+  const id = responseId[0]['id'];
+
+  foods.forEach(async (food) => {
+    const {
+      name,
+      calories,
+      protien,
+      fat,
+      saturated_fat,
+      trans_fat,
+      carb,
+      sugar,
+      sodium,
+    } = food;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protien, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const [response, fields] = await connection.execute(sql, [
+      id,
+      name,
+      calories,
+      protien,
+      fat,
+      saturated_fat,
+      trans_fat,
+      carb,
+      sugar,
+      sodium,
+    ]);
+    return response;
+  });
 };
 
 const getDietlogsImgById = async (id) => {
   const sql = `SELECT * FROM goals.diet_image WHERE valid = 1 AND diet_id = ?`;
+  const [response, fields] = await connection.execute(sql, [id]);
+  return response;
+};
+
+const getDietlogsFoodById = async (id) => {
+  const sql = `SELECT * FROM goals.diet_food WHERE valid = 1 AND diet_id = ?`;
   const [response, fields] = await connection.execute(sql, [id]);
   return response;
 };
@@ -88,5 +161,7 @@ module.exports = {
   getDietlogsImgById,
   updateDietlogImgValidById,
   insertDietlogData,
-  // insertDietlogImgById,
+  updateDietlogFoodById,
+  getDietlogsFoodById,
+  insertDietlogFoodById,
 };

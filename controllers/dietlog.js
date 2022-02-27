@@ -120,7 +120,12 @@ const updateDietlogDataById = async (req, res, next) => {
 };
 
 const insertDietlogData = async (req, res, next) => {
-  const title = req.body.title;
+  const title =
+    req.body.title === undefined ||
+    req.body.title === null ||
+    req.body.title === 'null'
+      ? ''
+      : req.body.title;
   const description =
     req.body.description === undefined ||
     req.body.description === null ||
@@ -151,8 +156,6 @@ const insertDietlogImgById = async (req, res, next) => {
     req.files.forEach((file) => {
       fileNames.push(file.filename);
     });
-    console.log('id', id);
-    console.log('fileNames', fileNames);
     try {
       const addImgResponse = await dietlogModel.updateDietlogImgById(
         fileNames,
@@ -167,10 +170,41 @@ const insertDietlogImgById = async (req, res, next) => {
   }
 };
 
+const updateDietlogFoodById = async (req, res, next) => {
+  const id = req.body.id;
+  const foods = req.body.foods;
+  try {
+    const response = await dietlogModel.updateDietlogFoodById(id, foods);
+    res.status(202).json({ code: 20001, msg: '新增成功' });
+  } catch (error) {
+    res.status(400).json({ code: 40001, msg: '新增食物發生錯誤' });
+  }
+};
+
+const insertDietlogFoodById = async (req, res, next) => {
+  const foods = req.body;
+  try {
+    const response = await dietlogModel.insertDietlogFoodById(foods);
+    res.status(202).json({ code: 20001, msg: '新增成功' });
+  } catch (error) {
+    res.status(400).json({ code: 40001, msg: '新增食物發生錯誤' });
+  }
+};
+
 const getDietlogsImgById = async (req, res, next) => {
   const id = req.body.id;
   try {
     const data = await dietlogModel.getDietlogsImgById(id);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getDietlogsFoodById = async (req, res, next) => {
+  const id = req.body.id;
+  try {
+    const data = await dietlogModel.getDietlogsFoodById(id);
     res.json(data);
   } catch (error) {
     console.log(error);
@@ -187,4 +221,7 @@ module.exports = {
   getDietlogsImgById,
   insertDietlogData,
   insertDietlogImgById,
+  updateDietlogFoodById,
+  getDietlogsFoodById,
+  insertDietlogFoodById,
 };
