@@ -13,4 +13,10 @@ const createUser = async(email, hashPassword, verifyCode, joinTime) => {
     return newUser;
 }
 
-module.exports = {getUser, createUser}
+// 檢查是否為admin
+const checkAdmin = async(email) => {
+    const [adminData] = await connection.execute('SELECT isAdmin FROM goals.member WHERE email=?', [email]);
+    return adminData;
+}
+
+module.exports = {getUser, createUser, checkAdmin}
