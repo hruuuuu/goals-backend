@@ -1070,13 +1070,6 @@
   dependencies:
     "passport-oauth" "1.0.0"
 
-"passport-facebook@^3.0.0":
-  "integrity" "sha512-K/qNzuFsFISYAyC1Nma4qgY/12V3RSLFdFVsPKXiKZt434wOvthFW1p7zKa1iQihQMRhaWorVE1o3Vi1o+ZgeQ=="
-  "resolved" "https://registry.npmjs.org/passport-facebook/-/passport-facebook-3.0.0.tgz"
-  "version" "3.0.0"
-  dependencies:
-    "passport-oauth2" "1.x.x"
-
 "passport-google-token@^0.1.2":
   "integrity" "sha1-JZYEKgnAwHDy/Dl9NZNyVqgXef0="
   "resolved" "https://registry.npmjs.org/passport-google-token/-/passport-google-token-0.1.2.tgz"
