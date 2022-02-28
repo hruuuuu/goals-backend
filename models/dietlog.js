@@ -1,6 +1,6 @@
 // 處理資料庫
 const connection = require('../utils/database');
-const { handlePrepare } = require('../utils/sqlQuery');
+const { handlePrepare, toNumber } = require('../utils/sqlQuery');
 
 const getDietlogs = async () => {
   const sql = `SELECT * FROM goals.diet WHERE valid = 1`;
@@ -9,7 +9,7 @@ const getDietlogs = async () => {
 };
 
 const getDietlogsByDate = async (date) => {
-  const sql = `SELECT * FROM goals.diet WHERE valid = 1 AND DATE(datetime) = ?`;
+  const sql = `SELECT * FROM goals.diet WHERE valid = 1 AND DATE(datetime) = ? ORDER BY category_id ASC`;
   const [response, fields] = await connection.execute(sql, [date]);
   return response;
 };
@@ -151,6 +151,14 @@ const getDietlogsFoodById = async (id) => {
   return response;
 };
 
+const getDietlogsFoodByIds = async (ids) => {
+  const idsStr = ids.join(',');
+  const idsFormat = handlePrepare(idsStr);
+  const sumCal = `SELECT SUM(calories), SUM(protien), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium) FROM goals.diet_food WHERE valid = 1 AND diet_id IN (${idsFormat})`;
+  const [response, fields] = await connection.execute(sumCal, ids);
+  return response;
+};
+
 module.exports = {
   getDietlogs,
   getDietlogsByDate,
@@ -164,4 +172,5 @@ module.exports = {
   updateDietlogFoodById,
   getDietlogsFoodById,
   insertDietlogFoodById,
+  getDietlogsFoodByIds,
 };

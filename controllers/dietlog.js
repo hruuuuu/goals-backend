@@ -202,12 +202,34 @@ const getDietlogsImgById = async (req, res, next) => {
 };
 
 const getDietlogsFoodById = async (req, res, next) => {
-  const id = req.body.id;
-  try {
-    const data = await dietlogModel.getDietlogsFoodById(id);
-    res.json(data);
-  } catch (error) {
-    console.log(error);
+  if (req.body.id) {
+    const id = req.body.id;
+    try {
+      const data = await dietlogModel.getDietlogsFoodById(id);
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+    }
+  } else if (req.body.ids) {
+    const ids = req.body.ids;
+    try {
+      const response = await dietlogModel.getDietlogsFoodByIds(ids);
+      const data = {
+        calories: response[0]['SUM(calories)'],
+        protien: response[0]['SUM(protien)'],
+        fat: response[0]['SUM(fat)'],
+        saturated_fat: response[0]['SUM(saturated_fat)'],
+        trans_fat: response[0]['SUM(trans_fat)'],
+        carb: response[0]['SUM(carb)'],
+        sugar: response[0]['SUM(sugar)'],
+        sodium: response[0]['SUM(sodium)'],
+      };
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    res.status(400).json({ code: 40002, msg: '缺少參數' });
   }
 };
 
