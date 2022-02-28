@@ -151,10 +151,12 @@ const getDietlogsFoodById = async (id) => {
   return response;
 };
 
+const sumSql = `SUM(calories), SUM(protien), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium)`;
+
 const getDietlogsFoodByIds = async (ids) => {
   const idsStr = ids.join(',');
   const idsFormat = handlePrepare(idsStr);
-  const sumCal = `SELECT SUM(calories), SUM(protien), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium) FROM goals.diet_food WHERE valid = 1 AND diet_id IN (${idsFormat})`;
+  const sumCal = `SELECT ${sumSql} FROM goals.diet_food WHERE valid = 1 AND diet_id IN (${idsFormat})`;
   const [response, fields] = await connection.execute(sumCal, ids);
   return response;
 };
