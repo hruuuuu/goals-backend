@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 const randomString = require('randomstring');
 const authModel = require('../models/auth');
 
-const checkUser = async(req, res, next) => {
+const checkUser = (req, res, next) => {
     return res.json({
         status: req.session.isLoggedIn,
         user: req.sessionID,
