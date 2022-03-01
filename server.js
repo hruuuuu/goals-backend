@@ -50,14 +50,18 @@ app.use('/api/verify', verifyRouter);
 
 let socialRouter = require('./routers/social');
 app.use('/api/social', socialRouter);
+
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 
 let orderRouter = require('./routers/order');
 app.use('/api/order', orderRouter);
 
-let couponRouter = require('./routers/coupon');
-app.use('/api/coupon', couponRouter);
+let couponRouter = require("./routers/coupon");
+app.use("/api/coupon", couponRouter);
+ 
+let cartRouter = require("./routers/cart");
+app.use("/api/cart", cartRouter);
 
 let favRouter = require('./routers/fav');
 app.use('/api/fav', favRouter);
