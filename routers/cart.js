@@ -28,10 +28,10 @@ router.post("/orderItems", async (req, res, next) => {
 });
 //order_details
 router.post("/orderDetails", async (req, res, next) => {
-  console.log(req.body);
+  const date = new Date();
 
   let [result] = await connection.execute(
-    "INSERT INTO goals.order_details (name,total,delivery_id,member_id,county,district,address,recipient,tel) VALUE (?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO goals.order_details (name,total,delivery_id,member_id,county,district,address,payment_id,payment_status_id,delivery_status_id,recipient,tel,order_status_id,create_at) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     [
       req.body.name,
       req.body.total,
@@ -40,8 +40,13 @@ router.post("/orderDetails", async (req, res, next) => {
       req.body.county,
       req.body.district,
       req.body.address,
+      req.body.payment_id,
+      req.body.payment_status_id,
+      req.body.delivery_status_id,
       req.body.recipient,
       req.body.tel,
+      req.body.order_status_id,
+      date,
     ]
   );
 
@@ -51,8 +56,6 @@ router.post("/orderDetails", async (req, res, next) => {
 //改優惠券狀態
 
 router.post("/orderItemsCoupon", async (req, res, next) => {
-  console.log(req.body);
-
   if (req.body.coupon_id !== 0) {
     let [result] = await connection.execute(
       "UPDATE coupon_receive SET valid=0 where member_id = ? AND coupon_id=?",

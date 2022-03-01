@@ -72,6 +72,9 @@ app.use('/api/fav', favRouter);
 let activityRouter = require('./routers/activity');
 app.use('/api/activity', activityRouter);
 
+let dietlogRouter = require('./routers/dietlog');
+app.use('/api/dietlog', dietlogRouter);
+
 app.use((req, res, next) => {
   res.status(404).send('404 not found');
 });
