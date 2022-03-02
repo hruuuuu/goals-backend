@@ -8,7 +8,7 @@ router.post("/getprofile", async (req, res, next) => {
   const { userID } = req.body;
   const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if (serverUserID === userID) {
+  if (serverUserData.member !== null && serverUserID === userID) {
     let [data] = await connection.execute(
       "SELECT * FROM goals.member WHERE id=?",
       [serverUserData.member.id]

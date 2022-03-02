@@ -6,7 +6,7 @@ router.post("/", async (req, res, next) => {
   const { userID } = req.body;
   const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if (serverUserID === userID) {
+  if (serverUserData.member !== null && serverUserID === userID) {
     let [data] = await connection.execute(
       "SELECT * FROM goals.order_details INNER JOIN payment_status on payment_status_id = payment_status.Paymentstatus_id INNER JOIN order_status on order_status_id = order_status.Orderstatus_id WHERE goals.order_details.member_id = ?",
       [serverUserData.member.id]
