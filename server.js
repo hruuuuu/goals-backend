@@ -51,6 +51,9 @@ app.use('/api/verify', verifyRouter);
 let socialRouter = require('./routers/social');
 app.use('/api/social', socialRouter);
 
+let commentRouter = require('./routers/comment');
+app.use('/api/comment', commentRouter);
+
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 
