@@ -53,7 +53,14 @@ router.post("/editpassword", async (req, res, next) => {
     req.body.password,
     req.body.oldpassword
   );
-  if (!verifyPassword) {
+
+  if (
+    req.body.oldpassword.length == 0 ||
+    req.body.newpassword.length == 0 ||
+    req.body.confirmpassword.length == 0
+  ) {
+    alert("有欄位未填入，請確認");
+  } else if (!verifyPassword) {
     alert("舊密碼輸入錯誤");
     return res.status(400).json({
       msg: "舊密碼輸入錯誤",
