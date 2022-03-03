@@ -51,6 +51,9 @@ app.use('/api/verify', verifyRouter);
 let socialRouter = require('./routers/social');
 app.use('/api/social', socialRouter);
 
+let commentRouter = require('./routers/comment');
+app.use('/api/comment', commentRouter);
+
 let productRouter = require('./routers/product');
 app.use('/api/product', productRouter);
 
@@ -71,6 +74,9 @@ app.use('/api/fav', favRouter);
 
 let activityRouter = require('./routers/activity');
 app.use('/api/activity', activityRouter);
+
+let dietlogRouter = require('./routers/dietlog');
+app.use('/api/dietlog', dietlogRouter);
 
 app.use((req, res, next) => {
   res.status(404).send('404 not found');
