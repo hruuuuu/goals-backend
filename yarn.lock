@@ -83,7 +83,7 @@
   "resolved" "https://registry.npmjs.org/@types/cors/-/cors-2.8.12.tgz"
   "version" "2.8.12"
 
-"@types/node@>=10.0.0":
+"@types/node@>=10.0.0", "@types/node@>=8.1.0":
   "integrity" "sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.18.tgz"
   "version" "17.0.18"
@@ -1265,7 +1265,7 @@
     "pug-runtime" "^3.0.1"
     "pug-strip-comments" "^2.0.0"
 
-"qs@6.9.7":
+"qs@^6.6.0", "qs@6.9.7":
   "integrity" "sha512-IhMFgUmuNpyRfxA90umL7ByLlgRXu6tIfKPpF5TmcfRLlLCckfP/g3IQmju6jjpu+Hh8rA+2p6A27ZSPOOHdKw=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.9.7.tgz"
   "version" "6.9.7"
@@ -1519,6 +1519,14 @@
   "version" "6.0.1"
   dependencies:
     "ansi-regex" "^5.0.1"
+
+"stripe@^8.206.0":
+  "integrity" "sha512-TrSPJsYc0FQCeW1THtcJej1/YlgCnBEve/q6hSWpWsOW5P2mPG/t0X+SH2jA8YlnXaKaLlucxdEyDyz2Q6x8nA=="
+  "resolved" "https://registry.npmjs.org/stripe/-/stripe-8.206.0.tgz"
+  "version" "8.206.0"
+  dependencies:
+    "@types/node" ">=8.1.0"
+    "qs" "^6.6.0"
 
 "supports-preserve-symlinks-flag@^1.0.0":
   "integrity" "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="
