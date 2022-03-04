@@ -78,57 +78,73 @@ router.post(
 );
 
 /* Facebook token 的中間件 */
-passport.use(new FacebookTokenStrategy({
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-},
-    function(accessToken, refreshToken, profile, done) {
-        return done(null, profile);
+passport.use(
+  new FacebookTokenStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    },
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, profile);
     }
-));
+  )
+);
 
-router.post('/facebook', passport.authenticate('facebook-token', {session: false}), async(req, res, next) => {
-    try{
-        const {provider} = req.user;
-        const {email, name} = req.user._json;
-        // 檢查用戶是否已存在
-        const [fbUser, field] = await connection.execute('SELECT * FROM goals.member WHERE email=?', [email]);
-        if(fbUser.length > 0){
-            const fbMember = {
-                id: fbUser[0].id,
-                email: fbUser[0].email
-            }
-            req.session.isLoggedIn = true;
-            req.session.member = fbMember;
-
-            return res.json({
-                code: 20004,
-                msg: "第三方登入成功",
-                data: req.sessionID
-            })
-        }
-        // 加入新用戶資料到資料庫中
-        await connection.execute('INSERT INTO goals.member (email, username, password, valid, verifyString) VALUE (?, ?, ?, ?, ?)', [email, name, "socialMedia", true, provider]);
-        const [newFbUser] = await connection.execute('SELECT * FROM goals.member WHERE email=?', [email]);
+router.post(
+  "/facebook",
+  passport.authenticate("facebook-token", { session: false }),
+  async (req, res, next) => {
+    try {
+      const { provider } = req.user;
+      const { email, name } = req.user._json;
+      // 檢查用戶是否已存在
+      const [fbUser, field] = await connection.execute(
+        "SELECT * FROM goals.member WHERE email=?",
+        [email]
+      );
+      if (fbUser.length > 0) {
         const fbMember = {
-            id: newFbUser[0].id,
-            email: newFbUser[0].email
-        }
+          id: fbUser[0].id,
+          email: fbUser[0].email,
+        };
         req.session.isLoggedIn = true;
         req.session.member = fbMember;
 
         return res.json({
-            code: 20004,
-            msg: "第三方登入成功",
-            data: req.sessionID
-        })
-    }catch(err){
-        console.error(err);
-        return res.json({
-            code: 30007,
-            msg: "Something went wrong, please try again later"
-        })
+          code: 20004,
+          msg: "第三方登入成功",
+          data: req.sessionID,
+        });
+      }
+      // 加入新用戶資料到資料庫中
+      await connection.execute(
+        "INSERT INTO goals.member (email, username, password, valid, verifyString) VALUE (?, ?, ?, ?, ?)",
+        [email, name, "socialMedia", true, provider]
+      );
+      const [newFbUser] = await connection.execute(
+        "SELECT * FROM goals.member WHERE email=?",
+        [email]
+      );
+      const fbMember = {
+        id: newFbUser[0].id,
+        email: newFbUser[0].email,
+      };
+      req.session.isLoggedIn = true;
+      req.session.member = fbMember;
+
+      return res.json({
+        code: 20004,
+        msg: "第三方登入成功",
+        data: req.sessionID,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.json({
+        code: 30007,
+        msg: "Something went wrong, please try again later",
+      });
     }
-})
+  }
+);
 
 module.exports = router;
