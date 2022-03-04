@@ -1,10 +1,9 @@
 const commentModel = require('../models/comment');
 
 const checkEligible = async(req, res, next) => {
-    const {product_id, user_id} = req.body;
-    const serverUserID = req.sessionID
+    const {product_id} = req.body;
     const serverUserData = req.session;
-    if(user_id === serverUserID){
+    if(serverUserData.member){
         const {id} = serverUserData.member;
         // 檢查用戶是否有對該商品進行購買
         const checkEligible = await commentModel.checkOrder(product_id, id);
@@ -31,10 +30,9 @@ const findComments = async(req, res, next) => {
 }
 
 const addNewComment = async(req, res, next) => {
-    const {product_id, newComment, date, user_id} = req.body;
-    const serverUserID = req.sessionID
+    const {product_id, newComment, date} = req.body;
     const serverUserData = req.session;
-    if(user_id === serverUserID){
+    if(serverUserData.member){
         const {id, email} = serverUserData.member;
         // 檢查用戶是否已對同一商品於同一天提交過評論
         const comment = await commentModel.addComment(product_id, id, email, newComment, date);
