@@ -66,11 +66,13 @@ const getProducts = async (req, res, next) => {
         case 'caloriesDesc':
           column = 'calories';
           method = 'DESC';
-          return await productModel.getProductsBySort(column, method);
+          const descData = await productModel.getProductsBySort(column, method);
+          return await getDiscountPrice(descData);
         case 'caloriesAsc':
           column = 'calories';
           method = 'ASC';
-          return await productModel.getProductsBySort(column, method);
+          const ascData = await productModel.getProductsBySort(column, method);
+          return await getDiscountPrice(ascData);
       }
     };
     const data = await handleSort();

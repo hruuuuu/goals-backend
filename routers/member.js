@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
 const argon2 = require("argon2");
-const alert = require("alert");
 const {checkLogin} = require('../utils/checkLogin');
 
 router.use(checkLogin);
@@ -45,17 +44,14 @@ router.post("/editpassword", async (req, res, next) => {
     req.body.newpassword.length == 0 ||
     req.body.confirmpassword.length == 0
   ) {
-    alert("有欄位未填入，請確認");
+    res.status(400);
+    res.send("密碼欄位不可為空");
   } else if (!verifyPassword) {
-    alert("舊密碼輸入錯誤");
-    return res.status(400).json({
-      msg: "舊密碼輸入錯誤",
-    });
+    res.status(400);
+    res.send("舊密碼輸入錯誤，請確認");
   } else if (req.body.newpassword !== req.body.confirmpassword) {
-    alert("新密碼與確認密碼不一致，請確認");
-    return res.status(400).json({
-      msg: "新密碼與確認密碼不一致，請確認",
-    });
+    res.status(400);
+    res.send("新密碼與確認密碼不一致，請確認");
   } else {
     //雜湊新密碼並加入改變資料庫
     const hashPassword = await argon2.hash(req.body.newpassword);
@@ -64,10 +60,8 @@ router.post("/editpassword", async (req, res, next) => {
       "UPDATE goals.member SET password=? WHERE id=?",
       [hashPassword, req.body.id]
     );
-    alert("修改成功");
-    return res.status(200).json({
-      msg: "修改成功",
-    });
+    res.status(200);
+    res.send("修改成功");
   }
 });
 

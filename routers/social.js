@@ -123,7 +123,6 @@ router.post('/facebook', passport.authenticate('facebook-token', {session: false
             data: req.sessionID
         })
     }catch(err){
-        console.error(err);
         return res.json({
             code: 30007,
             msg: "Something went wrong, please try again later"
