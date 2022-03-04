@@ -1,16 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
-const {checkLogin} = require('../utils/checkLogin');
+// const { checkLogin } = require("../utils/checkLogin");
 
-router.use(checkLogin);
+// router.use(checkLogin);
 
 router.post("/", async (req, res, next) => {
-    let [data] = await connection.execute(
-      "SELECT * FROM goals.order_details INNER JOIN payment_status on payment_status_id = payment_status.Paymentstatus_id INNER JOIN order_status on order_status_id = order_status.Orderstatus_id WHERE goals.order_details.member_id = ?",
-      [serverUserData.member.id]
-    );
-    res.json(data);
+  const serverUserData = req.session;
+
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.order_details INNER JOIN payment_status on payment_status_id = payment_status.Paymentstatus_id INNER JOIN order_status on order_status_id = order_status.Orderstatus_id WHERE goals.order_details.member_id = ?",
+    [serverUserData.member.id]
+  );
+  res.json(data);
 });
 
 router.post("/orderdetail", async (req, res, next) => {
