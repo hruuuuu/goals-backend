@@ -2,25 +2,20 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
 const argon2 = require("argon2");
+// const { checkLogin } = require("../utils/checkLogin");
+
+// router.use(checkLogin);
 
 router.post("/getprofile", async (req, res, next) => {
-  const { userID } = req.body;
-  const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if (serverUserID === userID) {
-    let [data] = await connection.execute(
-      "SELECT * FROM goals.member WHERE id=?",
-      [serverUserData.member.id]
-    );
-    res.json(data);
-  }
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.member WHERE id=?",
+    [serverUserData.member.id]
+  );
+  res.json(data);
 });
 
 router.post("/editprofile", async (req, res, next) => {
-  // const {userID} = req.body;
-  // const serverUserID = req.sessionID;
-  // const serverUserData = req.session;
-  // if(serverUserID === userID){
   let [result] = await connection.execute(
     "UPDATE goals.member SET username=?, email=? ,county=?,district=?,default_address=?, default_tel=? WHERE id=?",
     [
@@ -33,20 +28,10 @@ router.post("/editprofile", async (req, res, next) => {
       req.body.id,
     ]
   );
-
   res.json({ message: "ok" });
-  // }
 });
 
 router.post("/editpassword", async (req, res, next) => {
-  // const { userID } = req.body;
-  // const serverUserID = req.sessionID;
-  // const serverUserData = req.session;
-  // console.log("123");
-  // console.log(req.body);
-  // console.log(req.sessionID);
-  // console.log(req.session);
-
   // 比對舊密碼
   const verifyPassword = await argon2.verify(
     req.body.password,

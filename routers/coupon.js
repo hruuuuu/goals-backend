@@ -16,7 +16,7 @@ router.post("/get", async (req, res, next) => {
   const {userID} = req.body;
   const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if(serverUserID === userID){
+  if(serverUserData.member !== null && serverUserID === userID){
     let [data] = await connection.execute(
       "SELECT * FROM coupon where coupon.id NOT IN (SELECT coupon_id from coupon_receive where member_id=?) AND valid =1",
       [serverUserData.member.id]
@@ -31,7 +31,7 @@ router.post("/receive", async (req, res, next) => {
   const {userID} = req.body;
   const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if(serverUserID === userID){
+  if(serverUserData.member !== null && serverUserID === userID){
     let [data] = await connection.execute(
       "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=1;",
       [serverUserData.member.id]
@@ -46,7 +46,7 @@ router.post("/invalid", async (req, res, next) => {
   const {userID} = req.body;
   const serverUserID = req.sessionID;
   const serverUserData = req.session;
-  if(serverUserID === userID){
+  if(serverUserData.member !== null && serverUserID === userID){
     let [data] = await connection.execute(
       "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=0;",
       [serverUserData.member.id]
