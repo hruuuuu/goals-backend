@@ -13,7 +13,7 @@ const checkOrder = async(product_id, user_id) => {
 
 const addComment = async(product_id, user_id, user_email, comment, date) => {
     // 檢查是否已有同天同商品同一人的評論存在
-    const [checkComment] = await connection.execute('SELECT product_id, member_id FROM goals.comments WHERE create_at = ?', [date]);
+    const [checkComment] = await connection.execute('SELECT product_id, member_id FROM goals.comments WHERE create_at = ? AND member_id = ? AND product_id = ?', [date, user_id, product_id]);
     if(checkComment.length !== 0){
         return checkComment;
     }else{
