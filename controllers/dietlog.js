@@ -216,7 +216,7 @@ const getDietlogsFoodById = async (req, res, next) => {
       const response = await dietlogModel.getDietlogsFoodByIds(ids);
       const data = {
         calories: response[0]['SUM(calories)'],
-        protien: response[0]['SUM(protien)'],
+        protein: response[0]['SUM(protein)'],
         fat: response[0]['SUM(fat)'],
         saturated_fat: response[0]['SUM(saturated_fat)'],
         trans_fat: response[0]['SUM(trans_fat)'],

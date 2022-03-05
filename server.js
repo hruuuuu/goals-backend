@@ -60,11 +60,11 @@ app.use('/api/product', productRouter);
 let orderRouter = require('./routers/order');
 app.use('/api/order', orderRouter);
 
-let couponRouter = require("./routers/coupon");
-app.use("/api/coupon", couponRouter);
- 
-let cartRouter = require("./routers/cart");
-app.use("/api/cart", cartRouter);
+let couponRouter = require('./routers/coupon');
+app.use('/api/coupon', couponRouter);
+
+let cartRouter = require('./routers/cart');
+app.use('/api/cart', cartRouter);
 
 // let paymentRouter=require("./routers/payment")
 // app.use("/api/payment", paymentRouter);
@@ -77,6 +77,9 @@ app.use('/api/activity', activityRouter);
 
 let dietlogRouter = require('./routers/dietlog');
 app.use('/api/dietlog', dietlogRouter);
+
+let foodRouter = require('./routers/food');
+app.use('/api/food', foodRouter);
 
 app.use((req, res, next) => {
   res.status(404).send('404 not found');

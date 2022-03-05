@@ -80,7 +80,7 @@ const updateDietlogFoodById = async (id, foods) => {
     const {
       name,
       calories,
-      protien,
+      protein,
       fat,
       saturated_fat,
       trans_fat,
@@ -88,12 +88,12 @@ const updateDietlogFoodById = async (id, foods) => {
       sugar,
       sodium,
     } = food;
-    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protien, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
     const [response, fields] = await connection.execute(sql, [
       id,
       name,
       calories,
-      protien,
+      protein,
       fat,
       saturated_fat,
       trans_fat,
@@ -114,7 +114,7 @@ const insertDietlogFoodById = async (foods) => {
     const {
       name,
       calories,
-      protien,
+      protein,
       fat,
       saturated_fat,
       trans_fat,
@@ -122,12 +122,12 @@ const insertDietlogFoodById = async (foods) => {
       sugar,
       sodium,
     } = food;
-    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protien, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
     const [response, fields] = await connection.execute(sql, [
       id,
       name,
       calories,
-      protien,
+      protein,
       fat,
       saturated_fat,
       trans_fat,
@@ -151,7 +151,7 @@ const getDietlogsFoodById = async (id) => {
   return response;
 };
 
-const sumSql = `SUM(calories), SUM(protien), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium)`;
+const sumSql = `SUM(calories), SUM(protein), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium)`;
 
 const getDietlogsFoodByIds = async (ids) => {
   const idsStr = ids.join(',');
