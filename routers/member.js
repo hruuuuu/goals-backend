@@ -7,10 +7,10 @@ const argon2 = require("argon2");
 // router.use(checkLogin);
 
 router.post("/getprofile", async (req, res, next) => {
-  const serverUserData = req.session;
+  // const serverUserData = req.session;
   let [data] = await connection.execute(
     "SELECT * FROM goals.member WHERE id=?",
-    [serverUserData.member.id]
+    [req.session.member.id]
   );
   res.json(data);
 });
