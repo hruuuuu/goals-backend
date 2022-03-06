@@ -23,7 +23,7 @@ router.post("/get", checkContoller.checkLogin, async (req, res, next) => {
 });
 
 //使用者擁有的優惠券
-router.post("/receive", checkContoller.checkLogin, async (req, res, next) => {
+router.post("/receive",  checkContoller.checkLogin, async (req, res, next) => {
   const serverUserData = req.session;
     let [data] = await connection.execute(
       "SELECT * FROM goals.coupon_receive right JOIN coupon on coupon.id = coupon_id where member_id = ? AND goals.coupon_receive.valid=1;",
