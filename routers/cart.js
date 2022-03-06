@@ -1,7 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
-// const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+
+const calculateOrderAmount = (products) => {
+  let total = 0;
+  products.map((product) => {
+    total += product.discountPrice;
+  })
+  return total;
+};
+
+router.post("/create-payment-intent", async(req, res, next) => {
+  const products = req.body;
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(products),
+    currency: "USD",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+  res.json({
+    clientSecret: paymentIntent.client_secret,
+  })
+})
 
 //取得運送方式delivery
 router.post("/deliveryMethod", async (req, res, next) => {
@@ -30,29 +52,7 @@ router.post("/orderItems", async (req, res, next) => {
 
 //order_details
 router.post("/orderDetails", async (req, res, next) => {
-  // const cart = req.body;
-
-  // let line_items = cart.map((item) => ({
-  //   price_data: {
-  //     currency: 'TWD',
-  //     product_data: {
-  //       'name': item.name
-  //     },
-  //     unit_amount: item.price * 100 
-  //   },
-  //   quantity: item.amount
-  // }));
-
-  // const session = await stripe.checkout.sessions.create({
-  //   line_items,
-  //   mode: 'payment',
-    // discounts: [{
-    //   coupon: 'N3MLc02A'
-    // }],
-  //   success_url: "http://localhost:3000/status?success=true",
-  //   cancel_url: "http://localhost:3000/status?canceled=true"
-  // })
-  // res.json({url:session.url})
+  console.log(req.body)
 
   const date = new Date();
 
