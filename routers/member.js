@@ -6,15 +6,14 @@ const checkContoller = require('../utils/checkLogin');
 
 router.post("/getprofile", checkContoller.checkLogin, async (req, res, next) => {
   const serverUserData = req.session;
-    let [data] = await connection.execute(
-      "SELECT * FROM goals.member WHERE id=?",
-      [serverUserData.member.id]
-    );
-    res.json(data);
+  let [data] = await connection.execute(
+    "SELECT * FROM goals.member WHERE id=?",
+    [serverUserData.member.id]
+  );
+  res.json(data);
 });
 
 router.post("/editprofile", async (req, res, next) => {
-
   let [result] = await connection.execute(
     "UPDATE goals.member SET username=?, email=? ,county=?,district=?,default_address=?, default_tel=? WHERE id=?",
     [
