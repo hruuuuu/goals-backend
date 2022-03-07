@@ -3,7 +3,6 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 const passport = require('passport');
-
 const socketio = require('./utils/socketio');
 
 const app = express();

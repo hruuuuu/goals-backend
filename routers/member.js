@@ -2,18 +2,20 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
 const argon2 = require("argon2");
-// const { checkLogin } = require("../utils/checkLogin");
+const checkContoller = require("../utils/checkLogin");
 
-// router.use(checkLogin);
-
-router.post("/getprofile", async (req, res, next) => {
-  const serverUserData = req.session;
-  let [data] = await connection.execute(
-    "SELECT * FROM goals.member WHERE id=?",
-    [serverUserData.member.id]
-  );
-  res.json(data);
-});
+router.post(
+  "/getprofile",
+  checkContoller.checkLogin,
+  async (req, res, next) => {
+    const serverUserData = req.session;
+    let [data] = await connection.execute(
+      "SELECT * FROM goals.member WHERE id=?",
+      [req.session.member.id]
+    );
+    res.json(data);
+  }
+);
 
 router.post("/editprofile", async (req, res, next) => {
   let [result] = await connection.execute(
