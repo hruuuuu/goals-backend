@@ -226,11 +226,7 @@ const getDietlogsFoodById = async (req, res, next) => {
         calories: response[0]['SUM(calories)'],
         protein: response[0]['SUM(protein)'],
         fat: response[0]['SUM(fat)'],
-        saturated_fat: response[0]['SUM(saturated_fat)'],
-        trans_fat: response[0]['SUM(trans_fat)'],
         carb: response[0]['SUM(carb)'],
-        sugar: response[0]['SUM(sugar)'],
-        sodium: response[0]['SUM(sodium)'],
       };
       res.json(data);
     } catch (error) {

@@ -9,7 +9,6 @@ const getDietlogs = async (memberId) => {
 };
 
 const getDietlogsByDate = async (memberId, date) => {
-  console.log(memberId, date);
   const sql = `SELECT * FROM goals.diet WHERE valid = 1 AND member_id = ? AND DATE(datetime) = ? ORDER BY category_id ASC`;
   const [response, fields] = await connection.execute(sql, [memberId, date]);
   return response;
@@ -68,7 +67,7 @@ const insertDietlogData = async (
   datetime,
   memberId
 ) => {
-  const insert = `INSERT INTO goals.diet (title, description, category_id, datetime, member_id, valid) VALUES (?, ?, ?, ?,?, 1)`;
+  const insert = `INSERT INTO goals.diet (title, description, category_id, datetime, member_id, valid) VALUES (?, ?, ?, ?, ?, 1)`;
   const [insertResult] = await connection.execute(insert, [
     title,
     description,
@@ -87,29 +86,15 @@ const updateDietlogFoodById = async (id, foods) => {
   const [responseDelete] = await connection.execute(deletePrev, [id]);
 
   foods.forEach(async (food) => {
-    const {
-      name,
-      calories,
-      protein,
-      fat,
-      saturated_fat,
-      trans_fat,
-      carb,
-      sugar,
-      sodium,
-    } = food;
-    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const { name, calories, protein, fat, carb } = food;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, carb, valid) VALUES (?, ?, ?, ?, ?, ?, 1)`;
     const [response, fields] = await connection.execute(sql, [
       id,
       name,
       calories,
       protein,
       fat,
-      saturated_fat,
-      trans_fat,
       carb,
-      sugar,
-      sodium,
     ]);
     return response;
   });
@@ -121,29 +106,15 @@ const insertDietlogFoodById = async (memberId, foods) => {
   const id = responseId[0]['id'];
 
   foods.forEach(async (food) => {
-    const {
-      name,
-      calories,
-      protein,
-      fat,
-      saturated_fat,
-      trans_fat,
-      carb,
-      sugar,
-      sodium,
-    } = food;
-    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, saturated_fat, trans_fat, carb, sugar, sodium, valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
+    const { name, calories, protein, fat, carb } = food;
+    const sql = `INSERT INTO goals.diet_food (diet_id, name, calories, protein, fat, carb, valid) VALUES (?, ?, ?, ?, ?, ?, 1)`;
     const [response, fields] = await connection.execute(sql, [
       id,
       name,
       calories,
       protein,
       fat,
-      saturated_fat,
-      trans_fat,
       carb,
-      sugar,
-      sodium,
     ]);
     return response;
   });
@@ -161,7 +132,7 @@ const getDietlogsFoodById = async (id) => {
   return response;
 };
 
-const sumSql = `SUM(calories), SUM(protein), SUM(fat), SUM(saturated_fat), SUM(trans_fat), SUM(carb), SUM(sugar), SUM(sodium)`;
+const sumSql = `SUM(calories), SUM(protein), SUM(fat), SUM(carb)`;
 
 const getDietlogsFoodByIds = async (ids) => {
   const idsStr = ids.join(',');
