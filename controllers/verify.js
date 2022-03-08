@@ -91,7 +91,7 @@ const forgetEmail = async(req, res, next) => {
         const msg = {
             to: email,
             from: "Goals Function <goalsfoods@gmail.com>",
-            subject: "歡迎您註冊果實網站",
+            subject: "果實網站-密碼重置",
             text: "您好，請點選以下連結進行重置密碼",
             html: `
         <div>
@@ -150,7 +150,7 @@ const resetEmail = async(req, res, next) => {
 
         const newHashPassword = await argon2.hash(password);
 
-        const [updatePassword] = await verifyModel.updatePassword(newHashPassword, email);
+        const updatePassword = await verifyModel.updatePassword(newHashPassword, email);
             if(updatePassword.warningStatus === 0){
                 return res.json({
                     code: 20003,

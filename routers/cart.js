@@ -57,9 +57,9 @@ router.post("/orderDetails", async (req, res, next) => {
   const date = new Date();
 
   let [result] = await connection.execute(
-    "INSERT INTO goals.order_details (name,total,delivery_id,member_id,county,district,address,payment_id,payment_status_id,delivery_status_id,recipient,tel,order_status_id,create_at) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO goals.order_details (purchaser,total,delivery_id,member_id,county,district,address,payment_id,payment_status_id,delivery_status_id,recipient,tel,order_status_id,create_at) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     [
-      req.body.name,
+      req.body.purchaser,
       req.body.total,
       req.body.delivery_id,
       req.body.member_id,
