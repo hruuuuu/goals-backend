@@ -52,7 +52,7 @@ router.post("/orderItems", async (req, res, next) => {
 
 //order_details
 router.post("/orderDetails", async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const date = new Date();
 
