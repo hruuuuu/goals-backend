@@ -67,7 +67,7 @@ router.post("/orderDetails", async (req, res, next) => {
       req.body.district,
       req.body.address,
       req.body.payment_id,
-      req.body.payment_status_id,s
+      req.body.payment_status_id,
       req.body.delivery_status_id,
       req.body.recipient,
       req.body.tel,
