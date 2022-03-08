@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../utils/database");
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const calculateOrderAmount = (products) => {
   let total = 0;
   products.map((product) => {
     total += product.discountPrice;
-  })
+  });
   return total;
 };
 
-router.post("/create-payment-intent", async(req, res, next) => {
+router.post("/create-payment-intent", async (req, res, next) => {
   const products = req.body;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(products),
@@ -22,8 +22,8 @@ router.post("/create-payment-intent", async(req, res, next) => {
   });
   res.json({
     clientSecret: paymentIntent.client_secret,
-  })
-})
+  });
+});
 
 //取得運送方式delivery
 router.post("/deliveryMethod", async (req, res, next) => {
@@ -52,14 +52,14 @@ router.post("/orderItems", async (req, res, next) => {
 
 //order_details
 router.post("/orderDetails", async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
 
   const date = new Date();
 
   let [result] = await connection.execute(
-    "INSERT INTO goals.order_details (name,total,delivery_id,member_id,county,district,address,payment_id,payment_status_id,delivery_status_id,recipient,tel,order_status_id,create_at) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO goals.order_details (purchaser,total,delivery_id,member_id,county,district,address,payment_id,payment_status_id,delivery_status_id,recipient,tel,order_status_id,create_at) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     [
-      req.body.name,
+      req.body.purchaser,
       req.body.total,
       req.body.delivery_id,
       req.body.member_id,
@@ -67,7 +67,7 @@ router.post("/orderDetails", async (req, res, next) => {
       req.body.district,
       req.body.address,
       req.body.payment_id,
-      req.body.payment_status_id,
+      req.body.payment_status_id,s
       req.body.delivery_status_id,
       req.body.recipient,
       req.body.tel,
