@@ -44,12 +44,13 @@ const imgUploader = multer({
 });
 
 const getDietlogs = async (req, res, next) => {
-  const date = req.query.date;
-  if (req.query.date) {
-    const data = await dietlogModel.getDietlogsByDate(date);
+  const memberId = req.session.member.id;
+  const date = req.body.date;
+  if (req.body.date) {
+    const data = await dietlogModel.getDietlogsByDate(memberId, date);
     res.json(data);
   } else {
-    const data = await dietlogModel.getDietlogs();
+    const data = await dietlogModel.getDietlogs(memberId);
     res.json(data);
   }
 };
@@ -61,10 +62,12 @@ const getDietlogsCategory = async (req, res, next) => {
 
 const updateDietlogValidById = async (req, res, next) => {
   const id = req.body.id;
-  const data = await dietlogModel.updateDietlogValidById(id);
-  if (data.changedRows !== 0) {
+  const memberId = req.session.member.id;
+  try {
+    const data = await dietlogModel.updateDietlogValidById(id, memberId);
     res.status(202).json({ code: 20001, msg: '刪除成功' });
-  } else {
+  } catch (error) {
+    console.log(error);
     res.status(400).json({ code: 40001, msg: '資料不存在' });
   }
 };
@@ -96,6 +99,7 @@ const updateDietlogImgById = async (req, res, next) => {
 const updateDietlogDataById = async (req, res, next) => {
   const id = req.body.id;
   const title = req.body.title;
+  const memberId = req.session.member.id;
   const description =
     req.body.description === undefined ||
     req.body.description === null ||
@@ -110,7 +114,8 @@ const updateDietlogDataById = async (req, res, next) => {
       title,
       description,
       category,
-      datetime
+      datetime,
+      memberId
     );
     res.status(202).json({ code: 20001, msg: '編輯成功' });
   } catch (error) {
@@ -134,12 +139,14 @@ const insertDietlogData = async (req, res, next) => {
       : req.body.description;
   const category = req.body.category;
   const datetime = req.body.datetime;
+  const memberId = req.session.member.id;
   try {
     const data = await dietlogModel.insertDietlogData(
       title,
       description,
       category,
-      datetime
+      datetime,
+      memberId
     );
     req.id = data[0]['id'];
     next();
@@ -182,9 +189,10 @@ const updateDietlogFoodById = async (req, res, next) => {
 };
 
 const insertDietlogFoodById = async (req, res, next) => {
+  const memberId = req.session.member.id;
   const foods = req.body;
   try {
-    const response = await dietlogModel.insertDietlogFoodById(foods);
+    const response = await dietlogModel.insertDietlogFoodById(memberId, foods);
     res.status(202).json({ code: 20001, msg: '新增成功' });
   } catch (error) {
     res.status(400).json({ code: 40001, msg: '新增食物發生錯誤' });
@@ -216,13 +224,9 @@ const getDietlogsFoodById = async (req, res, next) => {
       const response = await dietlogModel.getDietlogsFoodByIds(ids);
       const data = {
         calories: response[0]['SUM(calories)'],
-        protien: response[0]['SUM(protien)'],
+        protein: response[0]['SUM(protein)'],
         fat: response[0]['SUM(fat)'],
-        saturated_fat: response[0]['SUM(saturated_fat)'],
-        trans_fat: response[0]['SUM(trans_fat)'],
         carb: response[0]['SUM(carb)'],
-        sugar: response[0]['SUM(sugar)'],
-        sodium: response[0]['SUM(sodium)'],
       };
       res.json(data);
     } catch (error) {
