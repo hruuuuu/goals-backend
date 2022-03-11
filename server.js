@@ -1,11 +1,14 @@
 const express = require('express');
 require('dotenv').config();
+const Koa = require('koa');
+const serve = require('koa-static');
 const path = require('path');
 const cors = require('cors');
 const passport = require('passport');
 const socketio = require('./utils/socketio');
 
 const app = express();
+const staticPath = './';
 
 app.use(
   cors({
@@ -32,6 +35,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(serve(path.join(__dirname, staticPath)));
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
