@@ -7,7 +7,7 @@ const cors = require('cors');
 const passport = require('passport');
 const socketio = require('./utils/socketio');
 
-const app = express();
+const app = new Koa();
 const staticPath = './';
 
 app.use(
