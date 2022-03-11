@@ -88,7 +88,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('server錯誤');
 });
 
-const port = process.env.SERVER_PORT || 3002;
+const port = process.env.PORT || 3002;
 const server = app.listen(port, () => {
   console.log(`server running at port ${port}`);
 });
