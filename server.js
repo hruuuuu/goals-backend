@@ -6,6 +6,7 @@ const passport = require('passport');
 const socketio = require('./utils/socketio');
 
 const app = express();
+let port = process.env.PORT || 3002;
 
 app.use(
   cors({
@@ -88,7 +89,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('server錯誤');
 });
 
-const port = process.env.PORT || 3002;
 const server = app.listen(port, () => {
   console.log(`server running at port ${port}`);
 });
